@@ -3,37 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🧠 PsycheMetrics Essence v2.0</title>
+  <title>PsycheMetrics Essence</title>
   <!-- Content Security Policy para seguridad -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary: #667eea; --secondary: #764ba2; --success: #48bb78; --danger: #f56565;
-      --bg: #f8f9ff; --surface: #ffffff; --text: #2d3748; --border: #e2e8f0;
-      --shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+      --primary: #2d4a9d; --secondary: #3b5bb5; --success: #3f8c5a; --danger: #c94f4f;
+      --bg: #eef1f8; --surface: #ffffff; --text: #1f2933; --subtext: #52606d;
+      --border: #d8dee6; --shadow: 0 14px 45px -20px rgba(23, 43, 77, 0.45);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --radius: 16px;
+      --radius: 18px;
     }
     [data-theme="dark"] {
-      --bg: #1a202c; --surface: #2d3748; --text: #e2e8f0; --border: #4a5568;
-      --shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+      --bg: #121821; --surface: #1c2330; --text: #e5e9f0; --subtext: #9aa5b1;
+      --border: #2d3748; --shadow: 0 18px 48px -18px rgba(5, 12, 30, 0.7);
     }
     
     /* BASE OPTIMIZADA */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      font-family: 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top right, rgba(45,74,157,0.18), transparent 55%),
+        radial-gradient(circle at bottom left, rgba(59,91,181,0.2), transparent 60%),
+        var(--bg);
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      padding: 20px; color: var(--text);
+      padding: 32px; color: var(--text);
     }
     .container {
-      max-width: 1000px; width: 100%; background: var(--surface);
+      max-width: 1080px; width: 100%; background: var(--surface);
       border-radius: var(--radius); box-shadow: var(--shadow);
       overflow: hidden; animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(40, 70, 140, 0.08);
     }
     @keyframes slideIn { 
       from { opacity: 0; transform: translateY(-40px) } 
@@ -41,34 +44,82 @@
     }
     
     /* HEADER INTELIGENTE */
-    header {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center;
+    header.app-header {
+      background: var(--surface); color: var(--text); padding: 28px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border);
     }
-    .theme-toggle { 
-      background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px;
-      border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px); display: flex;
-      align-items: center; justify-content: center; font-size: 18px; transition: var(--transition);
+    .brand {
+      display: flex; align-items: center; gap: 16px;
     }
-    .theme-toggle:hover { transform: rotate(30deg) scale(1.1); }
+    .brand-mark {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: linear-gradient(145deg, var(--primary), var(--secondary));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: #fff; letter-spacing: 0.5px;
+    }
+    .brand-title {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .brand-title h1 {
+      font-size: 1.85rem; font-weight: 700; letter-spacing: -0.5px; margin: 0;
+    }
+    .brand-title span {
+      font-size: 0.95rem; color: var(--subtext); font-weight: 500;
+    }
+    .theme-toggle {
+      background: rgba(59,91,181,0.12); border: none; color: var(--primary);
+      width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+      transition: var(--transition);
+    }
+    .theme-toggle:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(59,91,181,0.25); }
+    [data-theme="dark"] .theme-toggle { background: rgba(59,91,181,0.25); color: #f5f7ff; }
     
     /* PANTALLAS OPTIMIZADAS */
-    .screen { 
-      padding: 40px; min-height: 500px; 
-      display: flex; flex-direction: column; justify-content: center;
+    .screen {
+      padding: 40px; min-height: 500px;
+      display: flex; flex-direction: column;
       animation: fadeIn 0.4s ease-out;
     }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: none } }
     .hidden { display: none !important; }
     
     /* LOGIN OPTIMIZADO */
-    .login-container { max-width: 500px; margin: 0 auto; text-align: center; }
-    .login-title { font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; }
-    .login-subtitle { opacity: 0.9; margin-bottom: 30px; font-size: 1.1rem; }
+    .login-layout {
+      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px;
+      padding: 40px;
+    }
+    .login-hero {
+      background: linear-gradient(165deg, rgba(45,74,157,0.12), rgba(59,91,181,0.05));
+      border-radius: var(--radius); padding: 36px; border: 1px solid rgba(45,74,157,0.08);
+      display: flex; flex-direction: column; justify-content: center; gap: 22px;
+    }
+    .hero-kicker {
+      text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.22em;
+      color: var(--primary); font-weight: 600; margin-bottom: 12px;
+    }
+    .hero-title {
+      font-size: 2.4rem; line-height: 1.2; font-weight: 700; margin: 0;
+    }
+    .hero-description {
+      font-size: 1.05rem; color: var(--subtext); line-height: 1.6; margin: 0;
+    }
+    .hero-list { list-style: none; display: grid; gap: 14px; }
+    .hero-list li {
+      display: flex; gap: 12px; align-items: flex-start; color: var(--text);
+    }
+    .hero-list i { color: var(--primary); margin-top: 4px; }
+
+    .login-container { max-width: 420px; margin: 0 auto; text-align: left; display: flex; flex-direction: column; }
+    .login-title { font-size: 2rem; margin-bottom: 12px; font-weight: 700; }
+    .login-subtitle { color: var(--subtext); margin-bottom: 28px; font-size: 1.05rem; }
+    .mode-hint { font-size: 0.9rem; color: var(--subtext); margin-top: 10px; line-height: 1.5; }
+    #loginForm { display: flex; flex-direction: column; gap: 22px; }
     
     .form-group { margin-bottom: 20px; text-align: left; }
     .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
-    input, select { 
+    input, select {
       width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px;
       font-size: 1rem; background: var(--surface); color: var(--text); transition: var(--transition);
     }
@@ -78,7 +129,7 @@
     
     /* PROGRESS BAR MEJORADO */
     .progress-section {
-      margin: 25px 0; 
+      margin: 25px 0;
       background: var(--bg); border-radius: var(--radius); padding: 20px;
     }
     .progress-bar { 
@@ -94,11 +145,15 @@
     }
     
     /* QUESTION CARD OPTIMIZADA */
-    .question-card { 
+    .question-card {
       background: var(--bg); border-radius: var(--radius); padding: 30px; margin-bottom: 25px;
       border-left: 5px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05);
       transition: var(--transition);
     }
+
+    .profile { display: flex; align-items: flex-start; gap: 16px; }
+    .profile .brand-title h1 { font-size: 1.5rem; margin: 0; }
+    .profile .brand-title span { color: var(--subtext); font-size: 0.95rem; }
     .question-card:hover { box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
     .question-number { 
       display: inline-flex; align-items: center; justify-content: center;
@@ -201,12 +256,20 @@
     }
     
     /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .login-layout { grid-template-columns: 1fr; padding: 32px; }
+      .login-hero { order: 2; }
+      .login-container { order: 1; }
+    }
+
     @media (max-width: 768px) {
-      .container { margin: 0; border-radius: 0; max-width: 100%; }
+      body { padding: 16px; }
+      .container { margin: 0; border-radius: 18px; max-width: 100%; }
       .btn-container { flex-direction: column; gap: 15px; }
       .btn { width: 100%; justify-content: center; }
       .metric-card { min-width: 100%; }
-      header { padding: 20px; flex-direction: column; gap: 15px; }
+      header.app-header { padding: 20px; flex-direction: column; gap: 16px; align-items: flex-start; }
+      .login-layout { padding: 24px; gap: 32px; }
     }
   </style>
 </head>
@@ -214,69 +277,103 @@
   <div class="container">
     <!-- LOGIN SCREEN -->
     <div class="screen" id="loginScreen">
-      <header>
-        <h1>🧠 PsycheMetrics Essence v2.0</h1>
-        <button class="theme-toggle" id="themeToggle">🌓</button>
-      </header>
-      
-      <div class="login-container">
-        <h2 class="login-title">Evaluación Psicométrica Adaptativa</h2>
-        <p class="login-subtitle">Basado en Muñiz & Fonseca-Pedrero (2019)</p>
-        
-        <form id="loginForm">
-          <div class="form-group">
-            <label for="userName">
-              <i class="fas fa-user"></i> Nombre completo
-            </label>
-            <input type="text" id="userName" placeholder="Ej: María González" maxlength="50" required>
-            <small id="nameError" style="color: var(--danger); display: none;"></small>
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-mark">PM</div>
+          <div class="brand-title">
+            <h1>PsycheMetrics Essence</h1>
+            <span>Evaluaciones psicométricas confiables</span>
           </div>
-          
-          <div class="form-group">
-            <label for="modeSelect">
-              <i class="fas fa-sliders-h"></i> Modo de evaluación
-            </label>
-            <select id="modeSelect">
-              <option value="adaptive">📚 Estudio Adaptativo (Recomendado)</option>
-              <option value="fixed">📝 Examen Fijo</option>
-              <option value="competitive">⚔️ Competencia</option>
-            </select>
-          </div>
-          
-          <div class="form-group" id="itemCountGroup">
-            <label for="itemCount">
-              <i class="fas fa-list"></i> Cantidad de ítems
-            </label>
-            <input type="range" id="itemCount" min="5" max="30" value="15" step="5">
-            <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.9rem;">
-              <span>5</span>
-              <span id="itemCountDisplay">15</span>
-              <span>30</span>
-            </div>
-          </div>
-          
-          <button type="submit" class="btn" id="startBtn">
-            <i class="fas fa-play"></i> Comenzar Evaluación
-          </button>
-        </form>
-        
-        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--border);">
-          <p style="font-size: 0.95rem; opacity: 0.8; line-height: 1.5;">
-            <i class="fas fa-info-circle"></i> <strong>Tus datos:</strong> Almacenamos solo lo necesario para tu historial. Los datos se procesan localmente.
-          </p>
         </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema"></button>
+      </header>
+
+      <div class="login-layout">
+        <section class="login-hero">
+          <span class="hero-kicker">Modelo TRI</span>
+          <h2 class="hero-title">Diagnóstico riguroso con una interfaz pensada para profesionales.</h2>
+          <p class="hero-description">
+            Selecciona el modo de evaluación que mejor se adapte a tu sesión y comienza el cuestionario con ítems calibrados.
+          </p>
+          <ul class="hero-list">
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <span>Banco de ítems calibrado y motor adaptativo basado en parámetros de discriminación.</span>
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <span>Informes claros con evolución de habilidad y error estándar en cada sesión.</span>
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <span>Modo competencia con serie fija de 10 ítems para comparar resultados entre participantes.</span>
+            </li>
+          </ul>
+        </section>
+
+        <section class="login-container">
+          <h2 class="login-title">Configura tu evaluación</h2>
+          <p class="login-subtitle">Basado en Muñiz &amp; Fonseca-Pedrero (2019)</p>
+
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="userName">
+                <i class="fas fa-user"></i> Nombre completo
+              </label>
+              <input type="text" id="userName" placeholder="Ej: María González" maxlength="60" required>
+              <small id="nameError" style="color: var(--danger); display: none;"></small>
+            </div>
+
+            <div class="form-group">
+              <label for="modeSelect">
+                <i class="fas fa-sliders-h"></i> Modo de evaluación
+              </label>
+              <select id="modeSelect">
+                <option value="adaptive">Estudio adaptativo (recomendado)</option>
+                <option value="fixed">Aplicación fija con el número elegido</option>
+                <option value="competitive">Competencia cronometrada</option>
+              </select>
+              <p class="mode-hint" id="modeHint"></p>
+            </div>
+
+            <div class="form-group" id="itemCountGroup">
+              <label for="itemCount">
+                <i class="fas fa-list"></i> Cantidad de ítems
+              </label>
+              <input type="range" id="itemCount" min="5" max="30" value="15" step="5">
+              <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.9rem;">
+                <span>5</span>
+                <span id="itemCountDisplay">15</span>
+                <span>30</span>
+              </div>
+            </div>
+
+            <button type="submit" class="btn" id="startBtn">
+              <i class="fas fa-play"></i> Comenzar evaluación
+            </button>
+          </form>
+
+          <div style="margin-top: 32px; padding-top: 20px; border-top: 1px dashed var(--border);">
+            <p style="font-size: 0.9rem; color: var(--subtext); line-height: 1.5;">
+              <i class="fas fa-shield-alt"></i> <strong>Privacidad:</strong> Los resultados se guardan únicamente en este dispositivo y puedes exportarlos cuando lo necesites.
+            </p>
+          </div>
+        </section>
       </div>
     </div>
 
     <!-- QUIZ SCREEN -->
     <div class="screen hidden" id="quizScreen">
-      <header>
+      <header class="app-header">
         <div class="profile">
-          <h1>🧠 <span id="userNameDisplay">Usuario</span></h1>
+          <div class="brand-title">
+            <h1>Sesión en curso</h1>
+            <span>Participante: <strong id="userNameDisplay">Usuario</strong></span>
+          </div>
         </div>
-        <button class="theme-toggle" id="themeToggleQuiz">🌓</button>
+        <button class="theme-toggle" id="themeToggleQuiz" aria-label="Cambiar tema"></button>
       </header>
-      
+
       <div class="progress-section">
         <div class="ability-indicator">
           <i class="fas fa-chart-line"></i>
@@ -320,9 +417,12 @@
 
     <!-- RESULTS SCREEN -->
     <div class="screen hidden" id="resultScreen">
-      <header>
-        <h1>📊 Resultados Detallados</h1>
-        <button class="theme-toggle" id="themeToggleResults">🌓</button>
+      <header class="app-header">
+        <div class="brand-title">
+          <h1>Resultados detallados</h1>
+          <span id="resultSummaryTagline">Resumen de desempeño</span>
+        </div>
+        <button class="theme-toggle" id="themeToggleResults" aria-label="Cambiar tema"></button>
       </header>
       
       <div class="results-header">
@@ -770,6 +870,12 @@
     }
 
     // 🧩 ESTADO DE LA APLICACIÓN OPTIMIZADO
+    const MODE_HINTS = {
+      adaptive: 'Selecciona automáticamente ítems según tu rendimiento hasta alcanzar la precisión o el límite elegido.',
+      fixed: 'Presenta el número exacto de ítems que definas en el control inferior, manteniendo el mismo orden para todos.',
+      competitive: 'Entrega una batería fija de 10 ítems idéntica para cada participante para facilitar comparaciones.'
+    };
+
     const state = {
       user: { name: '', role: 'student' },
       config: { mode: 'adaptive', itemCount: 15 },
@@ -812,7 +918,7 @@
       document.getElementById('userName').addEventListener('input', validateName);
       
       // Configuración
-      document.getElementById('modeSelect').addEventListener('change', updateItemCountVisibility);
+      document.getElementById('modeSelect').addEventListener('change', handleModeChange);
       document.getElementById('itemCount').addEventListener('input', updateItemCountDisplay);
       
       // Quiz navigation
@@ -843,8 +949,8 @@
         return false;
       }
       
-      if (!/^[a-zA-ZáéíóúñÑ\s]+$/.test(name)) {
-        errorDisplay.textContent = 'El nombre solo puede contener letras y espacios';
+      if (!/^[a-zA-ZáéíóúñÑ\s'\-]+$/.test(name)) {
+        errorDisplay.textContent = 'El nombre solo puede contener letras, espacios, guiones o apóstrofes';
         errorDisplay.style.display = 'block';
         nameInput.style.borderColor = 'var(--danger)';
         return false;
@@ -1157,7 +1263,9 @@
       document.getElementById('abilityLevel').textContent = `${attempt.abilityPercentage}%`;
       document.getElementById('errorMargin').textContent = `${Math.round(attempt.standardError * 100 / 6)}%`;
       document.getElementById('timeTaken').textContent = attempt.timeMinutes;
-      
+      const summaryTagline = `${getModeDisplayName(attempt.mode)} · ${attempt.totalItems} ítems administrados`;
+      document.getElementById('resultSummaryTagline').textContent = summaryTagline;
+
       // Mensaje personalizado
       updateResultMessage(attempt);
       
@@ -1190,7 +1298,10 @@
 
     // 📈 GRÁFICA DE HABILIDAD INTERACTIVA
     function renderAbilityChart(responses) {
-      const ctx = document.getElementById('abilityChart').context;
+      const chartCanvas = document.getElementById('abilityChart');
+      if (!chartCanvas) return;
+      const ctx = chartCanvas.getContext('2d');
+      if (!ctx) return;
       
       if (state.chart) {
         state.chart.destroy();
@@ -1333,15 +1444,28 @@
     }
 
     // 📱 UTILIDADES DE UI
-    function updateItemCountVisibility() {
+    function handleModeChange() {
       const mode = document.getElementById('modeSelect').value;
+      updateItemCountVisibility(mode);
+      updateModeHint(mode);
+    }
+
+    function updateItemCountVisibility(mode) {
+      const effectiveMode = mode || document.getElementById('modeSelect').value;
       const group = document.getElementById('itemCountGroup');
-      group.style.display = mode === 'competitive' ? 'none' : 'block';
+      group.style.display = effectiveMode === 'competitive' ? 'none' : 'block';
     }
 
     function updateItemCountDisplay() {
       const value = document.getElementById('itemCount').value;
       document.getElementById('itemCountDisplay').textContent = value;
+    }
+
+    function updateModeHint(mode) {
+      const hint = document.getElementById('modeHint');
+      if (!hint) return;
+      const effectiveMode = mode || document.getElementById('modeSelect').value;
+      hint.textContent = MODE_HINTS[effectiveMode] || '';
     }
 
     function getModeDisplayName(mode) {
@@ -1354,7 +1478,7 @@
     }
 
     // Inicialización de elementos UI
-    updateItemCountVisibility();
+    handleModeChange();
     updateItemCountDisplay();
     updateThemeToggleIcons();
   </script>
