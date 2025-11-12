@@ -1,4 +1,4 @@
-# 🧠 PsycheMetrics Essence v2.0 - Sistema Modular de Evaluación Psicométrica
+# 🧠 PsycheMetrics v2.0 - Sistema Modular de Evaluación Psicométrica
 
 ## 🎯 **VISIÓN GENERAL**
 
