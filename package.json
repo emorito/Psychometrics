@@ -1,0 +1,79 @@
+{
+  "name": "psychemetrics-essence",
+  "version": "2.0.0",
+  "description": "🧠 Plataforma de evaluación psicométrica adaptativa con motor TRI (Teoría de Respuesta al Ítem)",
+  "keywords": [
+    "psicometria",
+    "tri",
+    "evaluacion-adaptativa",
+    "educacion",
+    "assessment",
+    "item-response-theory",
+    "educational-technology",
+    "psicologia-educativa"
+  ],
+  "author": "MiniMax Agent",
+  "license": "MIT",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usuario/psychemetrics-essence.git"
+  },
+  "bugs": {
+    "url": "https://github.com/usuario/psychemetrics-essence/issues"
+  },
+  "homepage": "https://usuario.github.io/psychemetrics-essence/",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "npx serve -s . -p 8000",
+    "lint": "echo 'Linting with ESLint (configure if needed)'",
+    "test": "echo 'No tests configured yet - see implementation guide'"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  },
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11"
+  ],
+  "features": {
+    "psychometric_engine": "Motor TRI de 2 parámetros implementado en JavaScript",
+    "adaptive_testing": "Evaluación adaptativa con selección inteligente de ítems",
+    "real_time_analysis": "Análisis en tiempo real de habilidad estimada",
+    "academic_export": "Exportación de datos en formato SPSS/R",
+    "responsive_design": "Diseño completamente responsivo",
+    "local_storage": "Almacenamiento local sin dependencia de servidor",
+    "multi_theme": "Temas claro/oscuro persistentes"
+  },
+  "use_cases": [
+    "Evaluación clínica de habilidades cognitivas",
+    "Tests educativos en cursos y universidades", 
+    "Evaluaciones corporativas y selección de personal",
+    "Investigación psicométrica y académica",
+    "Tests rápidos de autoevaluación",
+    "Herramientas de aprendizaje adaptativo"
+  ],
+  "technical_specs": {
+    "algorithm": "Item Response Theory (2-parameter logistic model)",
+    "adaptation_method": "Maximum Information Criterion",
+    "termination": "Standard Error threshold with minimum items",
+    "storage": "HTML5 LocalStorage API",
+    "dependencies": ["Chart.js (CDN)", "Google Fonts (CDN)", "Font Awesome (CDN)"]
+  },
+  "academic_validity": {
+    "model": "IRT 2PL (Two-Parameter Logistic Model)",
+    "parameters": {
+      "difficulty": "B-parameter (-3.0 to +3.0)",
+      "discrimination": "A-parameter (0.5 to 2.5)",
+      "pseudoguess": "C-parameter fixed at 0.2"
+    },
+    "estimation": "Maximum Likelihood Estimation with EAP prior",
+    "convergence": "Standard Error < 0.3 or 20 items maximum"
+  }
+}

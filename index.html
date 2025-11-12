@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧠 PsycheMetrics Essence v2.0</title>
+  <!-- Content Security Policy para seguridad -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #667eea; --secondary: #764ba2; --success: #48bb78; --danger: #f56565;
+      --bg: #f8f9ff; --surface: #ffffff; --text: #2d3748; --border: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius: 16px;
+    }
+    [data-theme="dark"] {
+      --bg: #1a202c; --surface: #2d3748; --text: #e2e8f0; --border: #4a5568;
+      --shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+    }
+    
+    /* BASE OPTIMIZADA */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 20px; color: var(--text);
+    }
+    .container {
+      max-width: 1000px; width: 100%; background: var(--surface);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      overflow: hidden; animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes slideIn { 
+      from { opacity: 0; transform: translateY(-40px) } 
+      to { opacity: 1; transform: none } 
+    }
+    
+    /* HEADER INTELIGENTE */
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .theme-toggle { 
+      background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px;
+      border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px); display: flex;
+      align-items: center; justify-content: center; font-size: 18px; transition: var(--transition);
+    }
+    .theme-toggle:hover { transform: rotate(30deg) scale(1.1); }
+    
+    /* PANTALLAS OPTIMIZADAS */
+    .screen { 
+      padding: 40px; min-height: 500px; 
+      display: flex; flex-direction: column; justify-content: center;
+      animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: none } }
+    .hidden { display: none !important; }
+    
+    /* LOGIN OPTIMIZADO */
+    .login-container { max-width: 500px; margin: 0 auto; text-align: center; }
+    .login-title { font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; }
+    .login-subtitle { opacity: 0.9; margin-bottom: 30px; font-size: 1.1rem; }
+    
+    .form-group { margin-bottom: 20px; text-align: left; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+    input, select { 
+      width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px;
+      font-size: 1rem; background: var(--surface); color: var(--text); transition: var(--transition);
+    }
+    input:focus, select:focus { 
+      outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(102,126,234,0.3); 
+    }
+    
+    /* PROGRESS BAR MEJORADO */
+    .progress-section {
+      margin: 25px 0; 
+      background: var(--bg); border-radius: var(--radius); padding: 20px;
+    }
+    .progress-bar { 
+      height: 8px; background: var(--border); border-radius: 4px; overflow: hidden;
+      margin: 10px 0;
+    }
+    .progress-fill { 
+      height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 4px; width: 0%; transition: width 0.4s ease;
+    }
+    .ability-indicator { 
+      display: flex; align-items: center; gap: 8px; font-weight: 500; margin-bottom: 8px;
+    }
+    
+    /* QUESTION CARD OPTIMIZADA */
+    .question-card { 
+      background: var(--bg); border-radius: var(--radius); padding: 30px; margin-bottom: 25px;
+      border-left: 5px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: var(--transition);
+    }
+    .question-card:hover { box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+    .question-number { 
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--primary); color: white; width: 32px; height: 32px;
+      border-radius: 50%; font-weight: bold; margin-bottom: 15px;
+    }
+    
+    /* OPTIONS OPTIMIZADAS */
+    .option-grid { display: grid; gap: 12px; margin-top: 20px; }
+    .option {
+      background: var(--surface); border: 2px solid var(--border); border-radius: 12px;
+      padding: 18px 25px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 15px;
+      font-size: 1.05rem; position: relative; overflow: hidden;
+    }
+    .option:hover { 
+      border-color: var(--primary); transform: translateX(5px); 
+      box-shadow: 0 4px 12px rgba(102,126,234,0.15);
+    }
+    .option.selected { 
+      border-color: var(--primary); background: rgba(102,126,234,0.1); 
+      transform: translateX(8px);
+    }
+    .option.correct { 
+      border-color: var(--success); background: rgba(72,187,120,0.15); 
+      animation: pulse-success 0.6s ease;
+    }
+    .option.incorrect { 
+      border-color: var(--danger); background: rgba(245,101,101,0.15); 
+      animation: pulse-error 0.6s ease;
+    }
+    @keyframes pulse-success { 0% { transform: scale(1) } 50% { transform: scale(1.02) } 100% { transform: scale(1) } }
+    @keyframes pulse-error { 0% { transform: scale(1) } 50% { transform: scale(1.02) } 100% { transform: scale(1) } }
+    .option-letter { 
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; background: var(--primary); 
+      color: white; border-radius: 8px; font-weight: bold; flex-shrink: 0;
+    }
+    
+    /* FEEDBACK SISTEMA */
+    .feedback-container { 
+      margin: 20px 0; padding: 15px; border-radius: 12px; 
+      animation: slideUp 0.3s ease-out;
+    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: translateY(0) } }
+    .feedback-correct { 
+      background: rgba(72, 187, 120, 0.15); border-left: 4px solid var(--success); color: #1a5632;
+    }
+    .feedback-incorrect { 
+      background: rgba(245, 101, 101, 0.15); border-left: 4px solid var(--danger); color: #742a2a;
+    }
+    
+    /* BOTONES OPTIMIZADOS */
+    .btn-container { display: flex; justify-content: space-between; margin-top: 30px; }
+    .btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;
+      border: none; border-radius: 50px; padding: 14px 32px; font-weight: 600; font-size: 1.05rem;
+      cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 10px;
+      position: relative; overflow: hidden;
+    }
+    .btn::before {
+      content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0;
+      background: rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    .btn:hover:not(:disabled)::before { width: 300px; height: 300px; }
+    .btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-outline {
+      background: transparent; border: 2px solid var(--primary); color: var(--primary);
+    }
+    .btn-outline:hover { background: rgba(102,126,234,0.1); }
+    
+    /* LOADING STATES */
+    .skeleton {
+      background: linear-gradient(90deg, var(--border), var(--bg), var(--border));
+      background-size: 200% 100%; animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: -200% 0 } 100% { background-position: 200% 0 } }
+    
+    /* RESULTS MEJORADOS */
+    .results-header { text-align: center; margin-bottom: 30px; }
+    .results-header h2 { font-size: 2.2rem; margin-bottom: 10px; }
+    .results-header p { opacity: 0.8; font-size: 1.1rem; }
+    
+    .metrics-container { 
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin: 30px 0;
+    }
+    .metric-card { 
+      background: var(--bg); border-radius: var(--radius); padding: 25px; text-align: center;
+      border-top: 4px solid var(--primary); transition: var(--transition);
+    }
+    .metric-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .metric-value { 
+      font-size: 2.5rem; font-weight: bold; margin: 10px 0; color: var(--primary);
+    }
+    .metric-label { font-size: 1.1rem; opacity: 0.9; }
+    
+    .chart-container { 
+      height: 300px; margin: 30px 0; background: var(--bg); border-radius: var(--radius); padding: 15px;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .container { margin: 0; border-radius: 0; max-width: 100%; }
+      .btn-container { flex-direction: column; gap: 15px; }
+      .btn { width: 100%; justify-content: center; }
+      .metric-card { min-width: 100%; }
+      header { padding: 20px; flex-direction: column; gap: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- LOGIN SCREEN -->
+    <div class="screen" id="loginScreen">
+      <header>
+        <h1>🧠 PsycheMetrics Essence v2.0</h1>
+        <button class="theme-toggle" id="themeToggle">🌓</button>
+      </header>
+      
+      <div class="login-container">
+        <h2 class="login-title">Evaluación Psicométrica Adaptativa</h2>
+        <p class="login-subtitle">Basado en Muñiz & Fonseca-Pedrero (2019)</p>
+        
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="userName">
+              <i class="fas fa-user"></i> Nombre completo
+            </label>
+            <input type="text" id="userName" placeholder="Ej: María González" maxlength="50" required>
+            <small id="nameError" style="color: var(--danger); display: none;"></small>
+          </div>
+          
+          <div class="form-group">
+            <label for="modeSelect">
+              <i class="fas fa-sliders-h"></i> Modo de evaluación
+            </label>
+            <select id="modeSelect">
+              <option value="adaptive">📚 Estudio Adaptativo (Recomendado)</option>
+              <option value="fixed">📝 Examen Fijo</option>
+              <option value="competitive">⚔️ Competencia</option>
+            </select>
+          </div>
+          
+          <div class="form-group" id="itemCountGroup">
+            <label for="itemCount">
+              <i class="fas fa-list"></i> Cantidad de ítems
+            </label>
+            <input type="range" id="itemCount" min="5" max="30" value="15" step="5">
+            <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.9rem;">
+              <span>5</span>
+              <span id="itemCountDisplay">15</span>
+              <span>30</span>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn" id="startBtn">
+            <i class="fas fa-play"></i> Comenzar Evaluación
+          </button>
+        </form>
+        
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--border);">
+          <p style="font-size: 0.95rem; opacity: 0.8; line-height: 1.5;">
+            <i class="fas fa-info-circle"></i> <strong>Tus datos:</strong> Almacenamos solo lo necesario para tu historial. Los datos se procesan localmente.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div class="screen hidden" id="quizScreen">
+      <header>
+        <div class="profile">
+          <h1>🧠 <span id="userNameDisplay">Usuario</span></h1>
+        </div>
+        <button class="theme-toggle" id="themeToggleQuiz">🌓</button>
+      </header>
+      
+      <div class="progress-section">
+        <div class="ability-indicator">
+          <i class="fas fa-chart-line"></i>
+          <span id="abilityDisplay">Nivel: 50%</span>
+          <span style="margin-left: 15px; opacity: 0.7; font-size: 0.9rem;">
+            Error: <span id="errorDisplay">0.80</span>
+          </span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+          <span id="questionCounter">Pregunta 1/15</span>
+          <span id="modeDisplay" style="opacity: 0.7;">Modo: Adaptativo</span>
+        </div>
+      </div>
+      
+      <div class="question-card" id="questionCard">
+        <div class="question-number" id="questionNumber">1</div>
+        <h2 id="questionText">Cargando pregunta...</h2>
+      </div>
+      
+      <div class="option-grid" id="optionGrid">
+        <div class="option skeleton" style="height: 60px;"></div>
+        <div class="option skeleton" style="height: 60px;"></div>
+        <div class="option skeleton" style="height: 60px;"></div>
+        <div class="option skeleton" style="height: 60px;"></div>
+      </div>
+      
+      <div class="feedback-container" id="feedbackContainer"></div>
+      
+      <div class="btn-container">
+        <button class="btn btn-outline" id="prevBtn" disabled>
+          <i class="fas fa-arrow-left"></i> Anterior
+        </button>
+        <button class="btn" id="nextBtn" disabled>
+          Siguiente <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div class="screen hidden" id="resultScreen">
+      <header>
+        <h1>📊 Resultados Detallados</h1>
+        <button class="theme-toggle" id="themeToggleResults">🌓</button>
+      </header>
+      
+      <div class="results-header">
+        <h2 id="resultTitle">Evaluación completada</h2>
+        <p id="resultSubtitle">Análisis de tu rendimiento psicométrico</p>
+      </div>
+      
+      <div class="metrics-container">
+        <div class="metric-card">
+          <div class="metric-label">Aciertos</div>
+          <div class="metric-value" id="correctCount">0</div>
+          <div>de <span id="totalItems">0</span> ítems</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Precisión</div>
+          <div class="metric-value" id="accuracyPercentage">0%</div>
+          <div>porcentaje de aciertos</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Habilidad Estimada</div>
+          <div class="metric-value" id="abilityLevel">50%</div>
+          <div>±<span id="errorMargin">8%</span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Tiempo</div>
+          <div class="metric-value" id="timeTaken">0.0</div>
+          <div>minutos</div>
+        </div>
+      </div>
+      
+      <div class="chart-container">
+        <canvas id="abilityChart"></canvas>
+      </div>
+      
+      <div class="btn-container">
+        <button class="btn btn-outline" id="exportBtn">
+          <i class="fas fa-download"></i> Exportar datos
+        </button>
+        <button class="btn" id="restartBtn">
+          <i class="fas fa-redo"></i> Nueva evaluación
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 🧠 MOTOR PSICOMÉTRICO OPTIMIZADO v2.0
+    class AdaptiveEngine {
+      constructor() {
+        this.theta = 0; // Habilidad estimada (-3 a +3)
+        this.se = 0.8;  // Error estándar
+        this.responses = [];
+        this.itemsAdministered = [];
+        this.abilityHistory = [];
+        this.confidence = 0;
+      }
+      
+      // Estimación de dificultad con mapeo optimizado
+      getDifficultyValue(difficulty) {
+        const mapping = { easy: -1.0, medium: 0, hard: 1.0 };
+        return mapping[difficulty] || 0;
+      }
+      
+      // Función de información del ítem (2PL logístico)
+      itemInformation(item, theta) {
+        const a = item.discrimination || 1.0; // Discriminación por ítem
+        const b = this.getDifficultyValue(item.difficulty);
+        const p = 1 / (1 + Math.exp(-a * (theta - b)));
+        return a * a * p * (1 - p);
+      }
+      
+      // Selección optimizada de ítem con cache
+      selectNextItem(availableItems) {
+        const remainingItems = availableItems.filter(item => 
+          !this.itemsAdministered.includes(item.id)
+        );
+        
+        if (remainingItems.length === 0) return availableItems[0];
+        
+        // Seleccionar ítem con máxima información
+        let bestItem = null;
+        let bestInfo = -Infinity;
+        
+        for (const item of remainingItems) {
+          const info = this.itemInformation(item, this.theta);
+          if (info > bestInfo) {
+            bestInfo = info;
+            bestItem = item;
+          }
+        }
+        
+        return bestItem;
+      }
+      
+      // Actualización de habilidad mejorada con step size dinámico
+      updateAbility(response, item) {
+        const difficulty = this.getDifficultyValue(item.difficulty);
+        const discrimination = item.discrimination || 1.0;
+        
+        // Registrar respuesta
+        this.responses.push(response ? 1 : 0);
+        this.itemsAdministered.push(item.id);
+        
+        // Calcular step size adaptativo
+        const baseStep = 0.8;
+        const adaptiveStep = baseStep / (1 + this.responses.length * 0.15);
+        const finalStep = Math.max(0.1, Math.min(0.8, adaptiveStep));
+        
+        // Actualización direccional
+        if (response) {
+          // Si respondió correctamente, mover hacia ítems más difíciles
+          this.theta += finalStep * discrimination;
+        } else {
+          // Si respondió incorrectamente, mover hacia ítems más fáciles
+          this.theta -= finalStep * discrimination;
+        }
+        
+        // Restringir a rango válido
+        this.theta = Math.max(-3, Math.min(3, this.theta));
+        
+        // Actualizar error estándar (mejora con más respuestas)
+        this.se = Math.max(0.15, this.se * Math.pow(0.92, 1 + this.responses.length * 0.1));
+        
+        // Calcular confianza basada en SE
+        this.confidence = Math.min(95, (1 - this.se / 3) * 100);
+        
+        const abilityPercentage = this.getAbilityPercentage();
+        const errorMargin = Math.round(this.se * 100 / 6 * 100) / 100;
+        
+        this.abilityHistory.push({
+          theta: this.theta,
+          ability: abilityPercentage,
+          se: this.se,
+          confidence: this.confidence
+        });
+        
+        return {
+          theta: this.theta,
+          se: this.se,
+          abilityPercentage,
+          confidence: this.confidence,
+          errorMargin
+        };
+      }
+      
+      // Conversión a porcentaje optimizada
+      getAbilityPercentage() {
+        return Math.round(((this.theta + 3) / 6) * 100);
+      }
+      
+      // Generación de reporte académico completo
+      generateReport() {
+        return {
+          abilityEstimate: this.theta,
+          abilityPercentage: this.getAbilityPercentage(),
+          standardError: Math.round(this.se * 1000) / 1000,
+          confidence: Math.round(this.confidence),
+          reliabilityEstimate: Math.round((1 - this.se / 3) * 100) / 100,
+          responsePattern: [...this.responses],
+          abilityHistory: [...this.abilityHistory],
+          itemsAdministered: [...this.itemsAdministered],
+          convergence: this.responses.length >= 5 && this.se < 0.3
+        };
+      }
+    }
+
+    // 💾 GESTOR DE DATOS OPTIMIZADO
+    class DataManager {
+      constructor() {
+        this.historyKey = 'psychemetrics_essence_v2';
+        this.configKey = 'psychemetrics_config';
+      }
+      
+      saveAttempt(attempt) {
+        try {
+          const history = this.loadHistory();
+          history.push({
+            ...attempt,
+            id: Date.now() + Math.random().toString(36).substr(2, 9),
+            version: '2.0'
+          });
+          
+          // Mantener solo los últimos 200 intentos
+          const trimmed = history.slice(-200);
+          localStorage.setItem(this.historyKey, JSON.stringify(trimmed));
+          
+          return true;
+        } catch (error) {
+          console.error('Error saving attempt:', error);
+          return false;
+        }
+      }
+      
+      loadHistory() {
+        try {
+          const data = localStorage.getItem(this.historyKey);
+          return data ? JSON.parse(data) : [];
+        } catch (error) {
+          console.error('Error loading history:', error);
+          return [];
+        }
+      }
+      
+      getUserStats(userName) {
+        const history = this.loadHistory();
+        const userAttempts = history.filter(attempt => attempt.user === userName);
+        
+        if (userAttempts.length === 0) return null;
+        
+        const scores = userAttempts.map(a => a.score);
+        const abilities = userAttempts.map(a => a.abilityPercentage);
+        
+        return {
+          totalAttempts: userAttempts.length,
+          averageScore: Math.round(scores.reduce((a, b) => a + b, 0) / scores.length),
+          bestScore: Math.max(...scores),
+          averageAbility: Math.round(abilities.reduce((a, b) => a + b, 0) / abilities.length),
+          bestAbility: Math.max(...abilities),
+          trend: this.calculateTrend(scores)
+        };
+      }
+      
+      calculateTrend(scores) {
+        if (scores.length < 2) return 'stable';
+        
+        const recent = scores.slice(-3);
+        const first = scores[0];
+        const improvement = recent[recent.length - 1] - first;
+        
+        if (improvement > 10) return 'improving';
+        if (improvement < -10) return 'declining';
+        return 'stable';
+      }
+      
+      exportData(userName = null) {
+        const history = this.loadHistory();
+        const filteredHistory = userName ? 
+          history.filter(attempt => attempt.user === userName) : 
+          history;
+        
+        return {
+          metadata: {
+            exportedAt: new Date().toISOString(),
+            totalAttempts: filteredHistory.length,
+            version: '2.0',
+            user: userName,
+            summary: userName ? this.getUserStats(userName) : null
+          },
+          attempts: filteredHistory
+        };
+      }
+      
+      clearUserData(userName) {
+        const history = this.loadHistory();
+        const remaining = history.filter(attempt => attempt.user !== userName);
+        localStorage.setItem(this.historyKey, JSON.stringify(remaining));
+      }
+    }
+
+    // 📦 GESTOR DE BANCO DE ÍTEMS MODULAR
+    class ItemBankManager {
+      constructor() {
+        this.customBank = null;
+        this.defaultBank = this.getDefaultBank();
+      }
+      
+      // BANCO POR DEFECTO (PERSONALIZABLE)
+      getDefaultBank() {
+        return [
+          { 
+            id: 1, 
+            question: "¿Cuál es el primer paso en la construcción de un test según Muñiz y Fonseca-Pedrero?", 
+            options: ["Estudios piloto", "Definición de la variable medida", "Marco general", "Edición del test"], 
+            correctAnswer: 2,
+            difficulty: "medium",
+            category: "construction",
+            discrimination: 1.2,
+            feedback: {
+              correct: "🎯 ¡Excelente! El marco general es fundamental para definir qué vamos a medir.",
+              incorrect: "📘 Antes de definir variables o hacer estudios piloto, necesitamos establecer el marco conceptual general."
+            }
+          },
+          { 
+            id: 2, 
+            question: "La definición operacional de una variable implica:", 
+            options: ["Describirla solo teóricamente", "Traducirla en conductas observables y medibles", "Seleccionar ítems de otros instrumentos", "Diseñar ítems tipo Likert"], 
+            correctAnswer: 1,
+            difficulty: "medium",
+            category: "construction",
+            discrimination: 1.5,
+            feedback: {
+              correct: "🧠 ¡Perfecto! Operacionalizar significa convertir conceptos abstractos en variables medibles.",
+              incorrect: "💡 La definición operacional va más allá de la teoría: requiere especificar cómo se medirá en la práctica."
+            }
+          },
+          // ⚠️ AÑADE MÁS ÍTEMS AQUÍ O CARGA DESDE ARCHIVO EXTERNO
+          { 
+            id: 3, 
+            question: "¿Cuál es el propósito principal del estudio piloto?", 
+            options: ["Analizar el error de medición", "Evaluar la comprensión y funcionamiento de los ítems", "Calcular los baremos del test", "Obtener la versión final del instrumento"], 
+            correctAnswer: 1,
+            difficulty: "easy",
+            category: "validation",
+            discrimination: 1.0,
+            feedback: {
+              correct: "🚀 ¡Así se hace! El estudio piloto permite detectar problemas antes de la validación final.",
+              incorrect: "🧪 El estudio piloto es un ensayo preliminar para identificar ítems con problemas."
+            }
+          },
+          { 
+            id: 4, 
+            question: "En el proceso de validación, la fiabilidad se refiere a:", 
+            options: ["La precisión de las puntuaciones", "La relevancia del contenido", "La estética del instrumento", "La dificultad media de los ítems"], 
+            correctAnswer: 0,
+            difficulty: "hard",
+            category: "validation",
+            discrimination: 1.8,
+            feedback: {
+              correct: "🌟 ¡Exacto! Fiabilidad significa consistencia y precisión en las mediciones.",
+              incorrect: "🔍 Fiabilidad se centra en la precisión, mientras que validez se ocupa de qué mide realmente el test."
+            }
+          },
+          { 
+            id: 5, 
+            question: "¿Qué caracteriza a la versión final del test?", 
+            options: ["Es la primera prueba empírica", "Surge tras analizar validez y fiabilidad", "Se usa solo para pilotos", "No requiere manual de uso"], 
+            correctAnswer: 1,
+            difficulty: "medium",
+            category: "construction",
+            discrimination: 1.3,
+            feedback: {
+              correct: "🏆 ¡Brillante! La versión final es el resultado del proceso psicométrico completo.",
+              incorrect: "📚 La versión final surge después de analizar rigurosamente fiabilidad y validez."
+            }
+          }
+        ];
+      }
+      
+      // CARGAR BANCO DESDE ARCHIVO EXTERNO
+      async loadBankFromFile(url) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          
+          const data = await response.json();
+          if (!Array.isArray(data)) throw new Error('Formato de datos inválido');
+          
+          // Validar estructura de ítems con sanitización XSS
+          const validatedItems = data.map((item, index) => {
+            if (!item.id || !item.question || !item.options || item.correctAnswer === undefined) {
+              throw new Error(`Ítem ${index + 1} tiene estructura inválida`);
+            }
+            return {
+              id: sanitizeText(item.id),
+              question: sanitizeText(item.question),
+              options: Array.isArray(item.options) ? item.options.map(opt => sanitizeText(opt)) : [],
+              correctAnswer: Number(item.correctAnswer),
+              difficulty: sanitizeText(item.difficulty || 'medium'),
+              category: sanitizeText(item.category || 'general'),
+              discrimination: Number(item.discrimination) || 1.0,
+              feedback: {
+                correct: sanitizeText(item.feedback?.correct || "¡Correcto!"),
+                incorrect: sanitizeText(item.feedback?.incorrect || "Incorrecto. Revisa el concepto.")
+              }
+            };
+          });
+          
+          this.customBank = validatedItems;
+          return { success: true, count: validatedItems.length };
+          
+        } catch (error) {
+          console.error('Error loading bank:', error);
+          return { success: false, error: error.message };
+        }
+      }
+      
+      // CARGAR BANCO DESDE ARRAY DIRECTO
+      loadBankFromArray(items) {
+        if (!Array.isArray(items) || items.length === 0) {
+          return { success: false, error: 'Array de ítems vacío o inválido' };
+        }
+        
+        this.customBank = items;
+        return { success: true, count: items.length };
+      }
+      
+      // OBTENER BANCO ACTUAL
+      getCurrentBank() {
+        return this.customBank || this.defaultBank;
+      }
+      
+      // VERIFICAR SI HAY BANCO PERSONALIZADO
+      hasCustomBank() {
+        return this.customBank !== null;
+      }
+      
+      // RESETEAR A BANCO POR DEFECTO
+      resetToDefault() {
+        this.customBank = null;
+      }
+      
+      // OBTENER ESTADÍSTICAS DEL BANCO
+      getBankStats() {
+        const bank = this.getCurrentBank();
+        const stats = {
+          total: bank.length,
+          byDifficulty: { easy: 0, medium: 0, hard: 0 },
+          byCategory: {},
+          averageDiscrimination: 0
+        };
+        
+        let totalDiscrimination = 0;
+        
+        bank.forEach(item => {
+          // Por dificultad
+          stats.byDifficulty[item.difficulty] = (stats.byDifficulty[item.difficulty] || 0) + 1;
+          
+          // Por categoría
+          stats.byCategory[item.category] = (stats.byCategory[item.category] || 0) + 1;
+          
+          // Discriminación promedio
+          totalDiscrimination += item.discrimination || 1.0;
+        });
+        
+        stats.averageDiscrimination = Math.round((totalDiscrimination / bank.length) * 100) / 100;
+        
+        return stats;
+      }
+    }
+
+    // 🔒 FUNCIÓN DE SANITIZACIÓN XSS PARA SEGURIDAD
+    function sanitizeText(text) {
+      if (typeof text !== 'string') {
+        return String(text || '');
+      }
+      
+      // Eliminar HTML potencialmente malicioso
+      return text
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
+        .replace(/\/g, '&#x2F;')
+        .trim();
+    }
+
+    // 🧩 ESTADO DE LA APLICACIÓN OPTIMIZADO
+    const state = {
+      user: { name: '', role: 'student' },
+      config: { mode: 'adaptive', itemCount: 15 },
+      engine: new AdaptiveEngine(),
+      dataManager: new DataManager(),
+      itemBankManager: new ItemBankManager(),
+      items: [],
+      currentQuestion: null,
+      currentIndex: 0,
+      answers: {},
+      startTime: null,
+      isAnswered: false,
+      chart: null
+    };
+
+    // 🎛️ INICIALIZACIÓN Y CONFIGURACIÓN
+    document.addEventListener('DOMContentLoaded', async () => {
+      setupEventListeners();
+      loadThemePreference();
+      
+      // Intentar cargar banco personalizado
+      const customBankUrl = 'data/items.json'; // Cambiar por tu archivo
+      const loadResult = await state.itemBankManager.loadBankFromFile(customBankUrl);
+      
+      if (loadResult.success) {
+        console.log(`✅ Cargados ${loadResult.count} ítems desde archivo externo`);
+      } else {
+        console.log('📚 Usando banco de ítems por defecto');
+      }
+      
+      // Mostrar estadísticas del banco
+      const stats = state.itemBankManager.getBankStats();
+      console.log('📊 Estadísticas del banco:', stats);
+    });
+
+    // EVENT LISTENERS OPTIMIZADOS
+    function setupEventListeners() {
+      // Formulario de login
+      document.getElementById('loginForm').addEventListener('submit', handleLogin);
+      document.getElementById('userName').addEventListener('input', validateName);
+      
+      // Configuración
+      document.getElementById('modeSelect').addEventListener('change', updateItemCountVisibility);
+      document.getElementById('itemCount').addEventListener('input', updateItemCountDisplay);
+      
+      // Quiz navigation
+      document.getElementById('prevBtn').addEventListener('click', previousQuestion);
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+      
+      // Results
+      document.getElementById('exportBtn').addEventListener('click', exportResults);
+      document.getElementById('restartBtn').addEventListener('click', restartQuiz);
+      
+      // Theme toggles
+      ['themeToggle', 'themeToggleQuiz', 'themeToggleResults'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.addEventListener('click', toggleTheme);
+      });
+    }
+
+    // ✅ VALIDACIÓN DE ENTRADA MEJORADA
+    function validateName() {
+      const nameInput = document.getElementById('userName');
+      const errorDisplay = document.getElementById('nameError');
+      const name = nameInput.value.trim();
+      
+      if (name.length < 2) {
+        errorDisplay.textContent = 'El nombre debe tener al menos 2 caracteres';
+        errorDisplay.style.display = 'block';
+        nameInput.style.borderColor = 'var(--danger)';
+        return false;
+      }
+      
+      if (!/^[a-zA-ZáéíóúñÑ\s]+$/.test(name)) {
+        errorDisplay.textContent = 'El nombre solo puede contener letras y espacios';
+        errorDisplay.style.display = 'block';
+        nameInput.style.borderColor = 'var(--danger)';
+        return false;
+      }
+      
+      errorDisplay.style.display = 'none';
+      nameInput.style.borderColor = 'var(--border)';
+      return true;
+    }
+
+    // 🚀 MANEJO DE LOGIN OPTIMIZADO
+    function handleLogin(event) {
+      event.preventDefault();
+      
+      const userName = document.getElementById('userName').value.trim();
+      const mode = document.getElementById('modeSelect').value;
+      const itemCount = parseInt(document.getElementById('itemCount').value);
+      
+      // Validación completa
+      if (!validateName()) return;
+      if (!['adaptive', 'fixed', 'competitive'].includes(mode)) {
+        alert('Modo de evaluación inválido');
+        return;
+      }
+      if (itemCount < 5 || itemCount > 30) {
+        alert('Cantidad de ítems debe estar entre 5 y 30');
+        return;
+      }
+      
+      startQuizSession(userName, mode, itemCount);
+    }
+
+    // 🎯 INICIALIZACIÓN DE SESIÓN
+    function startQuizSession(userName, mode, itemCount) {
+      state.user.name = userName;
+      state.config.mode = mode;
+      state.config.itemCount = mode === 'competitive' ? 10 : itemCount;
+      
+      // Inicializar motor
+      state.engine = new AdaptiveEngine();
+      
+      // Cargar banco de ítems
+      state.items = state.itemBankManager.getCurrentBank();
+      
+      // Preparar para modo fijo si es necesario
+      if (mode === 'fixed') {
+        const shuffled = [...state.items].sort(() => Math.random() - 0.5);
+        state.items = shuffled.slice(0, state.config.itemCount);
+      }
+      
+      // Resetear estado
+      state.currentQuestion = null;
+      state.currentIndex = 0;
+      state.answers = {};
+      state.startTime = Date.now();
+      state.isAnswered = false;
+      
+      // Actualizar UI
+      document.getElementById('userNameDisplay').textContent = userName.split(' ')[0];
+      document.getElementById('modeDisplay').textContent = `Modo: ${getModeDisplayName(mode)}`;
+      
+      // Cambiar a pantalla de quiz
+      showScreen('quizScreen');
+      
+      // Renderizar primera pregunta
+      renderQuestion();
+    }
+
+    // 📊 RENDERIZACIÓN DE PREGUNTA OPTIMIZADA
+    function renderQuestion() {
+      // Obtener pregunta actual
+      if (state.config.mode === 'adaptive') {
+        state.currentQuestion = state.engine.selectNextItem(state.items);
+      } else {
+        state.currentQuestion = state.items[state.currentIndex];
+      }
+      
+      if (!state.currentQuestion) {
+        finishQuiz();
+        return;
+      }
+      
+      // Actualizar progreso
+      const progress = state.config.mode === 'adaptive' ? 
+        (state.engine.itemsAdministered.length / state.config.itemCount) * 100 :
+        ((state.currentIndex + 1) / state.config.itemCount) * 100;
+      
+      document.getElementById('progressFill').style.width = `${progress}%`;
+      document.getElementById('questionCounter').textContent = 
+        state.config.mode === 'adaptive' ? 
+          `Ítem ${state.engine.itemsAdministered.length + 1}/${state.config.itemCount}` :
+          `Pregunta ${state.currentIndex + 1}/${state.config.itemCount}`;
+      
+      // Actualizar información de habilidad
+      const engineState = state.engine.abilityHistory.length > 0 ? 
+        state.engine.abilityHistory[state.engine.abilityHistory.length - 1] : 
+        { ability: 50, se: 0.8 };
+      
+      document.getElementById('abilityDisplay').textContent = `Nivel: ${engineState.ability}%`;
+      document.getElementById('errorDisplay').textContent = (engineState.se * 100 / 6).toFixed(2);
+      
+      // Renderizar pregunta
+      document.getElementById('questionText').textContent = state.currentQuestion.question;
+      document.getElementById('questionNumber').textContent = state.currentIndex + 1;
+      
+      // Renderizar opciones
+      renderOptions();
+      
+      // Restablecer estado de respuesta
+      state.isAnswered = false;
+      updateNavigationButtons();
+    }
+
+    // 🎨 RENDERIZACIÓN DE OPCIONES CON ANIMACIONES
+    function renderOptions() {
+      const optionsHTML = state.currentQuestion.options.map((option, index) => `
+        <div class="option" data-index="${index}" onclick="selectOption(${index})">
+          <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+          <div>${option}</div>
+        </div>
+      `).join('');
+      
+      const optionsGrid = document.getElementById('optionGrid');
+      optionsGrid.innerHTML = optionsHTML;
+      
+      // Restaurar selección previa si existe
+      if (state.answers[state.currentIndex] !== undefined) {
+        selectOption(state.answers[state.currentIndex], false);
+      }
+    }
+
+    // ✅ SELECCIÓN DE OPCIÓN OPTIMIZADA
+    function selectOption(index, saveResponse = true) {
+      if (state.isAnswered && saveResponse) return;
+      
+      const options = document.querySelectorAll('.option');
+      
+      // Limpiar estados anteriores
+      options.forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
+      
+      // Marcar selección
+      options[index].classList.add('selected');
+      
+      if (saveResponse) {
+        const isCorrect = index === state.currentQuestion.correctAnswer;
+        
+        // Actualizar motor adaptativo
+        const update = state.engine.updateAbility(isCorrect, state.currentQuestion);
+        
+        // Mostrar feedback
+        showFeedback(isCorrect);
+        
+        // Mostrar respuesta correcta si es incorrecta
+        if (!isCorrect) {
+          options[state.currentQuestion.correctAnswer].classList.add('correct');
+        } else {
+          options[index].classList.add('correct');
+        }
+        
+        // Guardar respuesta
+        state.answers[state.currentIndex] = index;
+        state.isAnswered = true;
+        
+        // Actualizar UI
+        document.getElementById('abilityDisplay').textContent = `Nivel: ${update.abilityPercentage}%`;
+        document.getElementById('errorDisplay').textContent = update.errorMargin;
+        
+        // Actualizar botones
+        updateNavigationButtons();
+        
+        // Auto-advance después de delay
+        setTimeout(() => {
+          if (state.config.mode === 'adaptive') {
+            nextQuestion();
+          }
+        }, isCorrect ? 1500 : 2500);
+      }
+    }
+
+    // 💬 SISTEMA DE FEEDBACK MEJORADO
+    function showFeedback(isCorrect) {
+      const feedback = isCorrect ? 
+        state.currentQuestion.feedback.correct : 
+        state.currentQuestion.feedback.incorrect;
+      
+      const container = document.getElementById('feedbackContainer');
+      container.textContent = feedback;
+      container.className = `feedback-container ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`;
+      
+      // Auto-hide después de delay
+      setTimeout(() => {
+        container.style.display = 'none';
+      }, isCorrect ? 2000 : 3000);
+    }
+
+    // 🧭 NAVEGACIÓN OPTIMIZADA
+    function previousQuestion() {
+      if (state.currentIndex > 0) {
+        state.currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      // Verificar que hay respuesta
+      if (state.answers[state.currentIndex] === undefined) {
+        alert('Por favor selecciona una respuesta antes de continuar');
+        return;
+      }
+      
+      state.currentIndex++;
+      
+      // Verificar si terminó
+      if (state.config.mode === 'adaptive') {
+        if (state.engine.itemsAdministered.length >= state.config.itemCount) {
+          finishQuiz();
+          return;
+        }
+      } else {
+        if (state.currentIndex >= state.config.itemCount) {
+          finishQuiz();
+          return;
+        }
+      }
+      
+      renderQuestion();
+    }
+
+    // 🔄 ACTUALIZAR BOTONES DE NAVEGACIÓN
+    function updateNavigationButtons() {
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      
+      prevBtn.disabled = state.currentIndex === 0;
+      
+      if (state.config.mode === 'adaptive') {
+        nextBtn.disabled = !state.isAnswered;
+        nextBtn.textContent = state.engine.itemsAdministered.length >= state.config.itemCount ? 
+          'Finalizar' : 'Siguiente';
+      } else {
+        nextBtn.disabled = !state.isAnswered;
+        nextBtn.textContent = state.currentIndex >= state.config.itemCount - 1 ? 
+          'Finalizar' : 'Siguiente';
+      }
+    }
+
+    // 🏁 FINALIZACIÓN DE QUIZ
+    function finishQuiz() {
+      const endTime = Date.now();
+      const totalTime = ((endTime - state.startTime) / 1000 / 60).toFixed(1);
+      
+      // Calcular resultados
+      const correct = Object.values(state.answers).filter((answer, index) => {
+        const item = state.config.mode === 'adaptive' ? 
+          state.items.find(item => item.id === state.engine.itemsAdministered[index]) :
+          state.items[index];
+        return answer === item.correctAnswer;
+      }).length;
+      
+      const total = state.config.mode === 'adaptive' ? 
+        state.engine.itemsAdministered.length : 
+        state.config.itemCount;
+      
+      const accuracy = Math.round((correct / total) * 100);
+      const abilityReport = state.engine.generateReport();
+      
+      // Guardar intento
+      const attempt = {
+        user: state.user.name,
+        mode: state.config.mode,
+        timestamp: new Date().toISOString(),
+        score: accuracy,
+        correctCount: correct,
+        totalItems: total,
+        timeMinutes: totalTime,
+        abilityEstimate: abilityReport.abilityEstimate,
+        abilityPercentage: abilityReport.abilityPercentage,
+        standardError: abilityReport.standardError,
+        confidence: abilityReport.confidence,
+        reliability: abilityReport.reliabilityEstimate,
+        convergence: abilityReport.convergence,
+        responses: Object.entries(state.answers).map(([index, answer]) => {
+          const item = state.items[parseInt(index)];
+          return {
+            questionIndex: parseInt(index),
+            itemId: item.id,
+            userAnswer: answer,
+            correctAnswer: item.correctAnswer,
+            difficulty: item.difficulty,
+            correct: answer === item.correctAnswer
+          };
+        }),
+        bankStats: state.itemBankManager.getBankStats()
+      };
+      
+      state.dataManager.saveAttempt(attempt);
+      
+      // Mostrar resultados
+      showResults(attempt);
+    }
+
+    // 📊 VISUALIZACIÓN DE RESULTADOS MEJORADA
+    function showResults(attempt) {
+      showScreen('resultScreen');
+      
+      // Actualizar métricas
+      document.getElementById('correctCount').textContent = attempt.correctCount;
+      document.getElementById('totalItems').textContent = attempt.totalItems;
+      document.getElementById('accuracyPercentage').textContent = `${attempt.score}%`;
+      document.getElementById('abilityLevel').textContent = `${attempt.abilityPercentage}%`;
+      document.getElementById('errorMargin').textContent = `${Math.round(attempt.standardError * 100 / 6)}%`;
+      document.getElementById('timeTaken').textContent = attempt.timeMinutes;
+      
+      // Mensaje personalizado
+      updateResultMessage(attempt);
+      
+      // Gráfica de progreso
+      renderAbilityChart(attempt.responses);
+    }
+
+    // 💬 MENSAJE PERSONALIZADO POR RENDIMIENTO
+    function updateResultMessage(attempt) {
+      const titleElement = document.getElementById('resultTitle');
+      const subtitleElement = document.getElementById('resultSubtitle');
+      
+      const score = attempt.score;
+      const ability = attempt.abilityPercentage;
+      
+      if (score >= 90 && ability >= 80) {
+        titleElement.innerHTML = '<i class="fas fa-crown"></i> Excelencia psicométrica';
+        subtitleElement.textContent = 'Dominio excepcional de conceptos psicométricos fundamentales';
+      } else if (score >= 80 && ability >= 70) {
+        titleElement.innerHTML = '<i class="fas fa-star"></i> Conocimiento sólido';
+        subtitleElement.textContent = 'Buena comprensión de principios de construcción y validación';
+      } else if (score >= 70) {
+        titleElement.innerHTML = '<i class="fas fa-book"></i> Conocimiento en desarrollo';
+        subtitleElement.textContent = 'Base sólida, repasando conceptos avanzados mejorará aún más';
+      } else {
+        titleElement.innerHTML = '<i class="fas fa-lightbulb"></i> Oportunidad de crecimiento';
+        subtitleElement.textContent = 'Revisar fundamentos de psicometría clásica ayudará significativamente';
+      }
+    }
+
+    // 📈 GRÁFICA DE HABILIDAD INTERACTIVA
+    function renderAbilityChart(responses) {
+      const ctx = document.getElementById('abilityChart').context;
+      
+      if (state.chart) {
+        state.chart.destroy();
+      }
+      
+      const history = state.engine.abilityHistory;
+      
+      state.chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: history.map((_, i) => `Ítem ${i + 1}`),
+          datasets: [{
+            label: 'Nivel de habilidad (%)',
+            data: history.map(h => h.ability),
+            borderColor: '#667eea',
+            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+            borderWidth: 3,
+            pointBackgroundColor: '#ffffff',
+            pointBorderColor: '#667eea',
+            pointBorderWidth: 3,
+            pointRadius: 5,
+            fill: true,
+            tension: 0.3
+          }, {
+            label: 'Error estándar (%)',
+            data: history.map(h => Math.round(h.se * 100 / 6)),
+            borderColor: '#f56565',
+            borderDash: [5, 5],
+            borderWidth: 2,
+            pointRadius: 3,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Evolución durante la evaluación adaptativa'
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+              callbacks: {
+                afterBody: function(context) {
+                  const index = context[0].dataIndex;
+                  const item = history[index];
+                  return [
+                    `Confianza: ${item.confidence}%`,
+                    `SE: ${item.se.toFixed(3)}`
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              min: 0,
+              max: 100,
+              title: {
+                display: true,
+                text: 'Habilidad estimada (%)'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Ítems administrados'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // 📤 EXPORTACIÓN MEJORADA
+    function exportResults() {
+      const exportData = state.dataManager.exportData(state.user.name);
+      const timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, '-');
+      
+      const dataStr = "data:text/json;charset=utf-8," + 
+        encodeURIComponent(JSON.stringify(exportData, null, 2));
+      
+      const download = document.createElement('a');
+      download.setAttribute("href", dataStr);
+      download.setAttribute("download", 
+        `psychemetrics_${state.user.name.replace(/\s+/g, '_')}_${timestamp}.json`);
+      document.body.appendChild(download);
+      download.click();
+      download.remove();
+    }
+
+    // 🔄 REINICIO DE SESIÓN
+    function restartQuiz() {
+      // Resetear estado
+      state.engine = new AdaptiveEngine();
+      state.currentQuestion = null;
+      state.currentIndex = 0;
+      state.answers = {};
+      state.isAnswered = false;
+      
+      // Volver a login
+      showScreen('loginScreen');
+      
+      // Limpiar formulario
+      document.getElementById('loginForm').reset();
+      document.getElementById('itemCountDisplay').textContent = '15';
+    }
+
+    // 🖥️ GESTIÓN DE PANTALLAS
+    function showScreen(targetId) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.toggle('hidden', screen.id !== targetId);
+      });
+    }
+
+    // 🎨 GESTIÓN DE TEMA
+    function loadThemePreference() {
+      const savedTheme = localStorage.getItem('psychemetrics_theme_v2') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeToggleIcons();
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('psychemetrics_theme_v2', newTheme);
+      updateThemeToggleIcons();
+    }
+
+    function updateThemeToggleIcons() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const icon = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      
+      document.querySelectorAll('.theme-toggle').forEach(toggle => {
+        toggle.innerHTML = icon;
+      });
+    }
+
+    // 📱 UTILIDADES DE UI
+    function updateItemCountVisibility() {
+      const mode = document.getElementById('modeSelect').value;
+      const group = document.getElementById('itemCountGroup');
+      group.style.display = mode === 'competitive' ? 'none' : 'block';
+    }
+
+    function updateItemCountDisplay() {
+      const value = document.getElementById('itemCount').value;
+      document.getElementById('itemCountDisplay').textContent = value;
+    }
+
+    function getModeDisplayName(mode) {
+      const names = {
+        adaptive: 'Adaptativo',
+        fixed: 'Fijo',
+        competitive: 'Competitivo'
+      };
+      return names[mode] || 'Desconocido';
+    }
+
+    // Inicialización de elementos UI
+    updateItemCountVisibility();
+    updateItemCountDisplay();
+    updateThemeToggleIcons();
+  </script>
+</body>
+</html>
